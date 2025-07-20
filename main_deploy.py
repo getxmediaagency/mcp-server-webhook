@@ -22,6 +22,7 @@ from mcp_server.actions.webhook_integration import (
     send_webhook_response,
     validate_webhook_signature
 )
+from health_check import health_check
 
 # Configure logging for deployment
 logging.basicConfig(
@@ -46,6 +47,9 @@ async def main():
             enable_cors=True,  # Enable CORS for web access
             cors_origins=["*"]  # Allow all origins for ChatGPT
         )
+        
+        # Add health check route
+        server.app.router.add_get('/health', health_check)
         
         # Register all actions
         logger.info("Registering actions...")
